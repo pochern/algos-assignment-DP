@@ -26,8 +26,8 @@ public class GlassFalling {
 	//Pick whatever parameters you want to, just make sure to return an int.
 	public int glassFallingMemoized(int floors, int sheets) {
 		int[][] arr = new int[floors+1][sheets+1];
-		for(int i=0; i<floors; i++) {
-			for(int j=0; j<sheets; j++) {
+		for(int i=0; i<=floors; i++) {
+			for(int j=0; j<=sheets; j++) {
 				arr[i][j] = Integer.MAX_VALUE;
 			}
 		}
@@ -44,15 +44,22 @@ public class GlassFalling {
 		if(sheets == 1) {
 			return floors;	// have to go through all floors
 		}
+	
+		// if value was changed, return to use
+		if(sheetDrops[floors][sheets] != Integer.MAX_VALUE) {
+			return sheetDrops[floors][sheets];
+		}
+		
 		int min = Integer.MAX_VALUE;
 		int temp;
 		for(int i=1; i<=floors; i++) {
 			temp = Math.max(glassFallingMemoizedCont(i-1, sheets-1, sheetDrops), glassFallingMemoizedCont(floors-i, sheets, sheetDrops));
 			min = Math.min(temp, min);
+			//+1 because throwing a sheet counts as attempt
+			sheetDrops[floors][sheets] = min + 1;
 		}
 
-		//+ 1 because throwing a sheet counts as attempt
-		return min + 1;
+		return sheetDrops[floors][sheets];
 	}
 
 	// Do not change the parameters!
